@@ -41,7 +41,7 @@ export default function SplashScreen({ onEnter }: { onEnter: () => void }) {
       transition: {
         delay: 0.8 + i * 0.05,
         duration: 0.5,
-        ease: [0.2, 0.65, 0.3, 0.9],
+        ease: [0.2, 0.65, 0.3, 0.9] as [number, number, number, number],
       },
     }),
   };
