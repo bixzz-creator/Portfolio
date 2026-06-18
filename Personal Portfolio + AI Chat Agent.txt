@@ -1,0 +1,196 @@
+Personal Portfolio + AI Chat Agent — Implementation Plan
+Build a professional, visually stunning portfolio website with an embedded AI chat agent at d:\Portfolio.
+
+User Review Required
+IMPORTANT
+
+Tailwind CSS Version: Your guide requests Tailwind CSS. I'll use Tailwind CSS v4 (latest, ships with Next.js 15). Please confirm this is acceptable.
+
+IMPORTANT
+
+Anthropic API Key: You'll need to provide your Anthropic API key after setup. I'll create the .env.local template — you just paste your key.
+
+WARNING
+
+Portfolio Data: The guide uses placeholder data (e.g., "Your Full Name", "Tech Company Inc."). I'll build with the placeholder data structure so the site is fully functional. You can update portfolioData.ts with your real information anytime.
+
+Open Questions
+Your Name & Details: Should I use the placeholder data from your guide as-is, or do you want to provide your real name, title, projects, etc. now? (Building with placeholders is fine — easy to swap later.)
+
+Dark Mode: Your guide mentions dark mode support. Should I implement a light/dark mode toggle, or go dark-mode-only for a more dramatic look?
+
+Animations: Should I use a library like Framer Motion for smooth scroll animations and section reveals, or keep it lightweight with CSS-only transitions?
+
+Proposed Changes
+This is a greenfield project. Everything below is [NEW].
+
+1. Project Scaffolding
+[NEW] Next.js 15 App (TypeScript + Tailwind CSS)
+Initialize with npx create-next-app@latest using TypeScript and Tailwind. Install additional dependencies:
+
+Package	Purpose
+@anthropic-ai/sdk	Claude API client
+lucide-react	Icon library (MessageCircle, Send, X, etc.)
+react-markdown	Render markdown in chat responses
+framer-motion	Smooth animations (optional, based on Q3)
+2. Portfolio Data Layer
+[NEW] src/data/portfolioData.ts
+TypeScript-typed portfolio data object following the schema from the guide
+Contains: personal info, education, skills, projects, certifications, GitHub repos, experience, social links, about section
+Single source of truth for both the UI sections and the AI chat context
+[NEW] src/data/types.ts
+TypeScript interfaces for all portfolio data structures (Project, Education, Skill, Experience, etc.)
+3. API Route — AI Chat
+[NEW] src/app/api/chat/route.ts
+POST endpoint accepting { messages: Array<{role, content}> }
+Constructs system prompt with portfolio JSON context
+Calls Claude claude-sonnet-4-20250514 (or claude-3-5-sonnet) with streaming disabled (simpler MVP)
+Returns { content: string } response
+Error handling with proper HTTP status codes
+Rate limiting awareness (basic, client-side for MVP)
+4. UI Components
+[NEW] src/components/Navbar.tsx
+Sticky top navigation with smooth scroll links
+Logo/name on left, section links on right
+Glassmorphism effect (frosted glass backdrop)
+Mobile hamburger menu
+Active section highlighting
+[NEW] src/components/Hero.tsx
+Full-viewport hero with gradient background
+Animated typing effect for tagline
+Avatar with glow effect
+CTA buttons: "View Projects" and "Chat with Me"
+Particle/geometric background animation (CSS)
+[NEW] src/components/Stats.tsx
+Quick snapshot cards (years of experience, projects, languages, etc.)
+Animated counter on scroll into view
+Glass-card styling
+[NEW] src/components/Projects.tsx
+Project cards in responsive grid (1-col mobile, 2-col tablet, 3-col desktop)
+Hover effects: card lift, image zoom, overlay with links
+Technology tags as pills
+Links to live demo and GitHub
+Generated project images using the image generation tool
+[NEW] src/components/Skills.tsx
+Skill categories displayed as grouped pill/badge lists
+Category headers with icons
+Subtle hover animations
+[NEW] src/components/Education.tsx
+Timeline-style layout for education entries
+Cards with institution, degree, highlights
+Certification badges with credential links
+[NEW] src/components/GitHubRepos.tsx
+Repository cards with star count, language badge, description
+Link to GitHub repo
+Styled to match GitHub's aesthetic
+[NEW] src/components/Experience.tsx
+Work experience timeline
+Company, role, duration, achievements as bullet points
+Subtle connecting line between entries
+[NEW] src/components/Contact.tsx
+Contact CTA section
+Social media icon links
+Email link
+"Start a Conversation" button that opens chat
+[NEW] src/components/Footer.tsx
+Minimal footer with copyright, social links
+"Built with Next.js & Claude" attribution
+[NEW] src/components/ChatWidget.tsx
+Floating chat button (bottom-right, pulsing glow)
+Expandable chat window (modal-style, 400px wide, 600px tall)
+Message bubbles with user/assistant styling
+Typing indicator animation
+Auto-scroll to latest message
+Input with send button
+Suggested starter questions
+Close/minimize button
+Glassmorphism chat header
+[NEW] src/components/SectionWrapper.tsx
+Reusable wrapper for consistent section spacing and scroll-reveal animations
+5. Main Page Assembly
+[NEW] src/app/page.tsx
+Assembles all sections in order: Hero → Stats → Projects → Skills → Education → Experience → GitHub → Contact
+ChatWidget rendered as a floating overlay
+[NEW] src/app/layout.tsx
+Root layout with Inter font from Google Fonts
+Meta tags for SEO (title, description, OpenGraph)
+Navbar included here for global presence
+6. Styling & Design System
+[NEW] src/app/globals.css
+CSS custom properties for the color palette:
+Primary: #2563EB (Blue)
+Accent: #7C3AED (Purple)
+Gradients: Blue → Purple for hero, accents
+Dark surface colors for cards
+Glassmorphism utility classes
+Custom scrollbar styling
+Smooth scroll behavior
+Animation keyframes (fade-in, slide-up, pulse, typing)
+Tailwind Config
+Extended with custom colors, fonts (Inter, Fira Code), and animation utilities
+7. Assets
+Generated project images
+Use the generate_image tool to create 3 placeholder project screenshots
+Avatar placeholder
+8. Environment & Config
+[NEW] .env.local
+ANTHROPIC_API_KEY=your-key-here (template, user fills in)
+[NEW] .gitignore (auto-generated by create-next-app)
+Ensure .env.local is listed
+File Structure Overview
+
+d:\Portfolio\
+├── .env.local                    # API keys (not committed)
+├── next.config.ts
+├── package.json
+├── tailwind.config.ts
+├── tsconfig.json
+├── public/
+│   ├── avatar.jpg                # Generated placeholder
+│   └── projects/
+│       ├── portfolio-ai.jpg      # Generated
+│       ├── dashboard.jpg         # Generated  
+│       └── ecommerce.jpg         # Generated
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx            # Root layout + SEO
+│   │   ├── page.tsx              # Main portfolio page
+│   │   ├── globals.css           # Global styles + design tokens
+│   │   └── api/
+│   │       └── chat/
+│   │           └── route.ts      # Claude API endpoint
+│   ├── components/
+│   │   ├── Navbar.tsx
+│   │   ├── Hero.tsx
+│   │   ├── Stats.tsx
+│   │   ├── Projects.tsx
+│   │   ├── Skills.tsx
+│   │   ├── Education.tsx
+│   │   ├── Experience.tsx
+│   │   ├── GitHubRepos.tsx
+│   │   ├── Contact.tsx
+│   │   ├── Footer.tsx
+│   │   ├── ChatWidget.tsx
+│   │   └── SectionWrapper.tsx
+│   └── data/
+│       ├── portfolioData.ts      # Portfolio content
+│       └── types.ts              # TypeScript types
+Verification Plan
+Automated Tests
+bash
+
+npm run build          # Ensure production build succeeds with no errors
+npm run lint           # ESLint checks pass
+Manual Verification
+Run npm run dev and visually inspect all sections
+Test chat widget: open/close, send messages (requires API key)
+Test responsive layout at mobile (375px), tablet (768px), desktop (1440px)
+Verify smooth scroll navigation
+Check all hover effects and animations
+Lighthouse audit targeting >90 score
+Chat Agent Testing
+Test with sample scenarios from the guide:
+"What's your biggest project?"
+"Do you know React?"
+"How can I work with you?"
+"Can you build a mobile app?"
