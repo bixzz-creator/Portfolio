@@ -113,7 +113,7 @@ export default function Profiles() {
   const profiles: ProfileLink[] = [
     {
       name: "GitHub",
-      url: portfolioData.social.github,
+      url: portfolioData.social.github || "#",
       icon: <GithubIcon size={22} />,
       color: "#e6edf3",
       hoverColor: "rgba(230, 237, 243, 0.15)",
@@ -121,7 +121,7 @@ export default function Profiles() {
     },
     {
       name: "LinkedIn",
-      url: portfolioData.social.linkedin,
+      url: portfolioData.social.linkedin || "#",
       icon: <LinkedinIcon size={22} />,
       color: "#0a66c2",
       hoverColor: "rgba(10, 102, 194, 0.2)",
@@ -137,11 +137,11 @@ export default function Profiles() {
     },
     {
       name: "Email",
-      url: `mailto:${portfolioData.social.email}`,
+      url: `mailto:${portfolioData.social.email || ""}`,
       icon: <Mail size={22} />,
       color: "#06b6d4",
       hoverColor: "rgba(6, 182, 212, 0.15)",
-      description: portfolioData.social.email,
+      description: portfolioData.social.email || "Get in touch",
     },
     {
       name: "Resume",
